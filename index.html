@@ -7,66 +7,163 @@
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: #0000
-      color: #f0f0f0;
+      font-family: 'Segoe UI', 'Arial Rounded MT Bold', 'Arial', sans-serif;
+      background: 
+        linear-gradient(135deg, #f9c1e5 0%, #c1e3fa 100%),
+        url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1400&q=80');
+      background-size: cover, cover;
+      background-blend-mode: lighten;
+      min-height: 100vh;
+      color: #333;
       text-align: center;
       padding: 50px 20px;
-      backdrop-filter: brightness(0.4);
+      position: relative;
+      /* Add a soft overlay for cuteness */
+      /* pastel pink + blue gradient with a soft dreamy touch */
+      /* Overlay hearts with ::before for a subtle effect */
+      overflow-x: hidden;
+      box-sizing: border-box;
     }
 
-    
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        120deg,
+        rgba(255, 183, 233, 0.10) 0px,
+        rgba(183, 236, 255, 0.10) 20px,
+        rgba(255, 183, 233, 0.15) 40px
+      );
+      opacity: 0.7;
+      mix-blend-mode: lighten;
+    }
+
     h1 {
       font-size: 3em;
-      color: #00bfff;
+      color: #fd5fa4;
       margin-bottom: 0.2em;
+      text-shadow: 2px 3px 8px #fff, 0 1px 0 #fd5fc4;
+      position: relative;
+      z-index: 1;
     }
 
     p {
       font-size: 1.2em;
       margin-bottom: 2em;
+      color: #444;
+      background: rgba(255,255,255,0.6);
+      border-radius: 18px;
+      display: inline-block;
+      padding: 12px 22px;
+      box-shadow: 0 2px 12px rgba(255,182,193,0.13);
+      position: relative;
+      z-index: 1;
     }
 
     .button-container {
       display: flex;
       flex-direction: column;
       gap: 20px;
-      max-width: 300px;
+      max-width: 350px;
       margin: 0 auto;
+      z-index: 1;
+      position: relative;
     }
 
     .button {
-      background-color: #e50914;
-      color: white;
-      padding: 15px;
+      background: linear-gradient(90deg, #ffb6e6 0%, #b9e0ff 100%);
+      color: #fff;
+      padding: 16px 20px;
       border: none;
-      border-radius: 12px;
-      font-size: 1em;
+      border-radius: 16px;
+      font-size: 1.1em;
+      font-weight: 600;
       cursor: pointer;
-      transition: transform 0.3s ease, background 0.3s ease;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
       text-decoration: none;
+      box-shadow: 0 4px 16px rgba(255, 182, 193, 0.22);
+      outline: none;
+      letter-spacing: 0.02em;
+      position: relative;
+      z-index: 1;
+      /* Add cute emoji wiggle */
+      animation: wiggle 2.5s infinite ease-in-out alternate;
+      animation-delay: calc(0.2s * var(--i,0));
+    }
+    .button:nth-child(1){ --i:1 }
+    .button:nth-child(2){ --i:2 }
+    .button:nth-child(3){ --i:3 }
+    .button:nth-child(4){ --i:4 }
+
+    @keyframes wiggle {
+      0% { transform: scale(1) rotate(-2deg);}
+      50% { transform: scale(1.03) rotate(2deg);}
+      100% { transform: scale(1) rotate(-2deg);}
     }
 
-    .button:hover {
-      background-color: #c00410;
-      transform: scale(1.05);
+    .button:hover, .button:focus {
+      background: linear-gradient(90deg, #fd5fa4 0%, #8fd3f4 100%);
+      color: #fff;
+      transform: scale(1.08) rotate(2deg);
+      box-shadow: 0 6px 24px rgba(253,95,164,0.14), 0 2px 8px #fff;
     }
 
     footer {
       margin-top: 60px;
-      font-size: 0.9em;
-      color: #999;
+      font-size: 1em;
+      color: #a88ebf;
+      font-style: italic;
+      letter-spacing: 0.03em;
+      background: rgba(255,255,255,0.34);
+      border-radius: 14px;
+      display: inline-block;
+      padding: 10px 22px;
+      box-shadow: 0 2px 14px rgba(255,182,193,0.11);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Cute floating hearts animation */
+    .hearts {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      overflow: visible;
+    }
+    .heart {
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      background: url('https://emojiapi.dev/api/v1/1f497/64.png') no-repeat center/contain;
+      opacity: 0.33;
+      animation: float 7s linear infinite;
+    }
+    @keyframes float {
+      0% {transform: translateY(100vh) scale(0.8) rotate(0deg);}
+      100% {transform: translateY(-12vh) scale(1.1) rotate(26deg);}
     }
   </style>
 </head>
 <body>
+  <!-- cute floating hearts for extra K-pop girly vibes! -->
+  <div class="hearts">
+    <div class="heart" style="left:8vw; animation-delay:0s;"></div>
+    <div class="heart" style="left:22vw; animation-delay:1.5s;"></div>
+    <div class="heart" style="left:47vw; animation-delay:0.9s;"></div>
+    <div class="heart" style="left:63vw; animation-delay:2.3s;"></div>
+    <div class="heart" style="left:83vw; animation-delay:3.5s;"></div>
+  </div>
 
   <h1>🎉 Welcome To The 18th Chapter Of Your Life 👑</h1>
-  <p>Couldn't think of any other way my broke a** could make your day worth it and still be at peace with myself... So i came up with a way to show of my skills and make it memorable...💌</p>
+  <p>Couldn't think of any other way my broke a** could make your day worth it and still be at peace with myself... So I came up with a way to show off my skills and make it memorable...💌</p>
 
   <div class="button-container">
     <a class="button" href="love-letter.html">💗 The love letters you never got in primary ... unless you did👀 </a>
-    <a class="button" href="memories.html">📸This is where the pictures could have gone...but we both know why they ain'y here </a>
+    <a class="button" href="memories.html">📸 This is where the pictures could have gone...but we both know why they ain't here </a>
     <a class="button" href="kpop.html">🎶 K-pop Chaos Awaits</a>
     <a class="button" href="chaotic-fun.html">🤪 Just Pure Madness</a>
   </div>
@@ -74,6 +171,5 @@
   <footer>
     Made with way too much love by your favorite introverted high and weird bestie 💖
   </footer>
-
 </body>
 </html>
