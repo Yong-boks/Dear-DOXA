@@ -28,6 +28,121 @@
       text-decoration: none;
       font-weight: bold;
     }
+
+    /* Scrapbook styles */
+    .scrapbook-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 40px auto 0;
+      max-width: 500px;
+      min-height: 370px;
+      position: relative;
+      perspective: 1200px;
+    }
+    .scrapbook-page {
+      background: #fff0f6;
+      border: 4px solid #f8bbd0;
+      border-radius: 18px;
+      box-shadow: 0 6px 24px #e573731f;
+      width: 380px;
+      min-height: 350px;
+      padding: 28px 16px 18px 16px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: transform 0.5s cubic-bezier(.76,-0.03,.24,1.08), opacity 0.4s;
+      opacity: 0;
+      z-index: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .scrapbook-page.active {
+      opacity: 1;
+      z-index: 1;
+      transform: rotateY(0deg) scale(1.01);
+      animation: popin 0.4s;
+    }
+    .scrapbook-page.prev {
+      opacity: 0.6;
+      z-index: 0;
+      transform: rotateY(-40deg) scale(0.98);
+    }
+    .scrapbook-page.next {
+      opacity: 0.6;
+      z-index: 0;
+      transform: rotateY(40deg) scale(0.98);
+    }
+    @keyframes popin {
+      from { transform: scale(0.95) rotateY(10deg); opacity: 0.4; }
+      to   { transform: scale(1.01) rotateY(0deg); opacity: 1; }
+    }
+
+    .scrapbook-img {
+      display: block;
+      width: 80%;
+      max-width: 240px;
+      margin: 0 auto 20px;
+      border-radius: 16px;
+      border: 3px dashed #f06292;
+      box-shadow: 0 3px 8px #f48fb1aa;
+      background: #fff;
+      transition: box-shadow 0.3s;
+    }
+    .scrapbook-caption {
+      font-size: 1.1em;
+      margin-top: 10px;
+      color: #ad1457;
+      font-style: italic;
+      word-break: break-word;
+    }
+    .kpop-sticker {
+      position: absolute;
+      width: 48px;
+      height: 48px;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+    .sticker-1 { top: 18px; left: 24px; transform: rotate(-12deg);}
+    .sticker-2 { bottom: 22px; right: 23px; transform: rotate(8deg);}
+    .sticker-3 { top: 25px; right: 28px; transform: rotate(-6deg);}
+    .sticker-4 { bottom: 30px; left: 18px; transform: rotate(15deg);}
+
+    .scrapbook-controls {
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      width: 210px;
+      margin-top: 16px;
+      user-select: none;
+    }
+    .scrapbook-btn {
+      background: #f8bbd0;
+      border: none;
+      border-radius: 12px;
+      color: #880e4f;
+      font-size: 1.5em;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s, color 0.2s;
+      box-shadow: 0 2px 8px #f0629266;
+      outline: none;
+    }
+    .scrapbook-btn:active {
+      background: #ad1457;
+      color: #fff;
+    }
+    @media (max-width: 550px) {
+      .scrapbook-container {
+        max-width: 95vw;
+      }
+      .scrapbook-page {
+        width: 94vw;
+        min-height: 220px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -35,9 +150,118 @@
   <p>
     If you were an idol, you'd be the center — no questions asked.  
     Here's your honorary debut stage. 💅  
-    (Coming soon: embarrassing dance clips, Jake from Enhypen shrine, chaotic fanfics, and more.)
+    i had no idea how I'd make this page more interesting...so bear* with me...
   </p>
 
+  <div class="scrapbook-container" id="scrapbook">
+    <!-- Scrapbook pages will be injected here by JS -->
+  </div>
+
+  <div class="scrapbook-controls">
+    <button class="scrapbook-btn" id="prevBtn" aria-label="Previous page">←</button>
+    <span id="pageIndicator" style="font-size:1.1em;color:#ad1457;"></span>
+    <button class="scrapbook-btn" id="nextBtn" aria-label="Next page">→</button>
+  </div>
+
   <a href="index.html">← Back to Menu</a>
+
+  <!-- Stickers (SVGs or emojis for scrapbook feel) -->
+  <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f389.svg" class="kpop-sticker sticker-1" alt="Party popper sticker">
+  <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f49c.svg" class="kpop-sticker sticker-2" alt="Purple heart sticker">
+  <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/2728.svg" class="kpop-sticker sticker-3" alt="Sparkles sticker">
+  <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f60d.svg" class="kpop-sticker sticker-4" alt="Heart eyes sticker">
+
+  <script>
+    // Replace these with your preferred images or official promo photos!
+    // All images are public/official/press or fanart under fair use. For production, host your own or ensure you have rights.
+    const scrapbookPages = [
+      {
+        img: "https://kpopping.com/documents/3e/1/800/Stray-Kids-Hellevator-Press-Photo-1.jpeg?v=ad3ba",
+        caption: "Stray Kids: Hellevator Era — Rookie chaos, but legends in the making 💥"
+      },
+      {
+        img: "https://i.pinimg.com/originals/4f/2d/15/4f2d15f8ba8b1a1a9b9d44d1d3e9e84c.jpg",
+        caption: "Bang Chan leading the squad like a true leader 🐺"
+      },
+      {
+        img: "https://kpopping.com/documents/66/2/800/Stray-Kids-Maxident-Press-Photo-3.jpeg?v=ad3ba",
+        caption: "Stray Kids: Maxident — Pink fits, max energy, max cuteness! 💗"
+      },
+      {
+        img: "https://kpopping.com/documents/43/5/800/Stray-Kids-Press-Photo.jpeg?v=ad3ba",
+        caption: "Felix's smile = instant serotonin drop 💫"
+      },
+      {
+        img: "https://kpopping.com/documents/9e/1/800/Enhypen-Press-Photo-2023-1.jpeg?v=ad3ba",
+        caption: "Enhypen: Border Carnival era — visual kings on stage 👑"
+      },
+      {
+        img: "https://kpopping.com/documents/82/1/800/Enhypen-Press-Photo-2023-2.jpeg?v=ad3ba",
+        caption: "Jake from Enhypen — puppy energy, main character vibes 🐶"
+      },
+      {
+        img: "https://kpopping.com/documents/3c/1/800/Enhypen-Press-Photo-2023-6.jpeg?v=ad3ba",
+        caption: "Enhypen: Always serving looks, always in sync 🤍"
+      }
+    ];
+
+    let currentPage = 0;
+
+    function renderScrapbook() {
+      const scrapbook = document.getElementById('scrapbook');
+      scrapbook.innerHTML = scrapbookPages.map((page, idx) => {
+        let cls = "scrapbook-page";
+        if (idx === currentPage) cls += " active";
+        else if (idx === currentPage - 1) cls += " prev";
+        else if (idx === currentPage + 1) cls += " next";
+        return `
+          <div class="${cls}" style="z-index:${idx === currentPage ? 1 : 0};">
+            <img class="scrapbook-img" src="${page.img}" alt="Kpop scrapbook photo">
+            <div class="scrapbook-caption">${page.caption}</div>
+          </div>
+        `;
+      }).join('');
+      document.getElementById('pageIndicator').textContent =
+        `${currentPage + 1} / ${scrapbookPages.length}`;
+    }
+
+    function nextPage() {
+      if (currentPage < scrapbookPages.length - 1) {
+        currentPage++;
+        renderScrapbook();
+      }
+    }
+    function prevPage() {
+      if (currentPage > 0) {
+        currentPage--;
+        renderScrapbook();
+      }
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', prevPage);
+    document.getElementById('nextBtn').addEventListener('click', nextPage);
+
+    // Touch/swipe support for flipping
+    let startX = null;
+    document.getElementById('scrapbook').addEventListener('touchstart', function(e) {
+      if (e.touches.length === 1) startX = e.touches[0].clientX;
+    });
+    document.getElementById('scrapbook').addEventListener('touchend', function(e) {
+      if (startX === null) return;
+      let endX = e.changedTouches[0].clientX;
+      if (endX - startX > 40) prevPage();
+      else if (startX - endX > 40) nextPage();
+      startX = null;
+    });
+
+    // Optional: Keyboard arrow navigation
+    document.addEventListener('keydown', function(e) {
+      if (e.key === "ArrowRight" || e.key === "d") nextPage();
+      if (e.key === "ArrowLeft" || e.key === "a") prevPage();
+    });
+
+    // Render on load
+    renderScrapbook();
+  </script>
 </body>
 </html>
